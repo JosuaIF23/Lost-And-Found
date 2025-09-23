@@ -1,0 +1,26 @@
+## Global Variabel
+@baseUrl = https://open-api.delcom.org/api/v1
+
+## Auth
+## ---------------------------------
+
+# @name Register
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+    "name": "Latihan API",
+    "email": "latihan@delcom.org",
+    "password": "123456"
+}
+###
+
+# @name Login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "email": "latihan@delcom.org",
+    "password": "123456"
+}
+###
