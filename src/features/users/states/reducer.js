@@ -1,17 +1,18 @@
+import { act } from "react";
 import { ActionType } from "./action";
 
-export const isAuthLoginReducer = (state = false, action) => {
+export const usersReducer = (state = [], action) => {
   switch (action.type) {
-    case ActionType.SET_IS_AUTJ_LOGIN:
+    case ActionType.SET_USERS:
       return action.payload;
     default:
       return state;
   }
 };
 
-export const isAuthRegisterReducer = (state = false, action) => {
+export const userReducer = (state = null, action) => {
   switch (action.type) {
-    case ActionType.setIsAuthRegisterActionCreator:
+    case ActionType.SET_USER:
       return action.payload;
     default:
       return state;
