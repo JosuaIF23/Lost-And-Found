@@ -1,16 +1,13 @@
 import apiHelper from "../../../helpers/apiHelper";
-import {
-  showErrorDialog,
-  showSuccessDialog,
-} from "../../../helpers/toolsHelper";
+import { showErrorDialog, showSuccessDialog } from "../../../helpers/toolsHelper";
 import authApi from "../api/authApi";
 
 export const ActionType = {
-  SET_IS_AUTJ_LOGIN: "SET_IS_AUTH_LOGIN",
+  SET_IS_AUTH_LOGIN: "SET_IS_AUTH_LOGIN",
   SET_IS_AUTH_REGISTER: "SET_IS_AUTH_REGISTER",
 };
 
-// Login
+// ✅ Login
 export function setIsAuthLoginActionCreator(isAuthLogin) {
   return {
     type: ActionType.SET_IS_AUTH_LOGIN,
@@ -18,10 +15,10 @@ export function setIsAuthLoginActionCreator(isAuthLogin) {
   };
 }
 
-export function asyncSetisAuthLogin(username, password) {
+export function asyncSetIsAuthLogin(email, password) {
   return async (dispatch) => {
     try {
-      const data = await authApi.postLogin(username, password);
+      const data = await authApi.postLogin(email, password);
       apiHelper.putAccessToken(data.token);
     } catch (error) {
       showErrorDialog(error.message);
@@ -30,7 +27,7 @@ export function asyncSetisAuthLogin(username, password) {
   };
 }
 
-//Register
+// ✅ Register
 export function setIsAuthRegisterActionCreator(isAuthRegister) {
   return {
     type: ActionType.SET_IS_AUTH_REGISTER,
@@ -38,10 +35,10 @@ export function setIsAuthRegisterActionCreator(isAuthRegister) {
   };
 }
 
-export function asyncSetIsAuthRegister(name, username, password) {
+export function asyncSetIsAuthRegister(name, email, password) {
   return async (dispatch) => {
     try {
-      const message = await authApi.postRegister(name, username, password);
+      const message = await authApi.postRegister(name, email, password);
       showSuccessDialog(message);
     } catch (error) {
       showErrorDialog(error.message);

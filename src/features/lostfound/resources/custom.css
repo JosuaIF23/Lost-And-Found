@@ -1,0 +1,115 @@
+/* Layout */
+body {
+  padding-top: 56px;
+  background-color: #f5f7fa;
+  font-family: "Inter", sans-serif;
+}
+
+.sidebar {
+  height: calc(100vh - 56px);
+  position: fixed;
+  left: 0;
+  width: 250px;
+  background-color: #ffffff;
+  border-right: 1px solid #dee2e6;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed ~ .main-content {
+  margin-left: 70px;
+}
+
+/* Nav links */
+.nav-link {
+  color: #333;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: #0d6efd;
+  color: white !important;
+  box-shadow: 0 2px 6px rgba(13, 110, 253, 0.2);
+}
+
+.nav-link i {
+  margin-right: 10px;
+  width: 20px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* Profile image */
+.profile-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #dee2e6;
+  margin-right: 8px;
+}
+
+/* Cards */
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-header {
+  font-weight: 600;
+  background-color: #f8f9fa;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.btn i {
+  margin-right: 5px;
+}
+
+/* Table */
+.table thead th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f5ff;
+}
+
+/* Modal */
+.modal-content {
+  border-radius: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    position: relative;
+    height: auto;
+  }
+  .main-content {
+    margin-left: 0;
+  }
+}

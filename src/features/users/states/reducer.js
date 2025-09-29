@@ -1,4 +1,3 @@
-import { act } from "react";
 import { ActionType } from "./action";
 
 export const usersReducer = (state = [], action) => {
@@ -28,7 +27,7 @@ export const profileReducer = (state = null, action) => {
   }
 };
 
-export const isProfileReducer = (state = null, action) => {
+export const isProfileReducer = (state = false, action) => {
   switch (action.type) {
     case ActionType.SET_IS_PROFILE:
       return action.payload;
@@ -37,7 +36,7 @@ export const isProfileReducer = (state = null, action) => {
   }
 };
 
-export const isChageProfileReducer = (state = false, action) => {
+export const isChangeProfileReducer = (state = false, action) => {
   switch (action.type) {
     case ActionType.SET_IS_CHANGE_PROFILE:
       return action.payload;
@@ -55,10 +54,9 @@ export const isChangeProfilePhotoReducer = (state = false, action) => {
   }
 };
 
-
 export const isChangeProfilePasswordReducer = (state = false, action) => {
   switch (action.type) {
-    case ActionType.SET_IS_CHANGE_PROFILE_PHOTO:
+    case ActionType.SET_IS_CHANGE_PROFILE_PASSWORD:
       return action.payload;
     default:
       return state;

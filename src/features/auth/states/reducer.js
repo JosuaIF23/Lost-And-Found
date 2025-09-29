@@ -2,7 +2,7 @@ import { ActionType } from "./action";
 
 export const isAuthLoginReducer = (state = false, action) => {
   switch (action.type) {
-    case ActionType.SET_IS_AUTJ_LOGIN:
+    case ActionType.SET_IS_AUTH_LOGIN:
       return action.payload;
     default:
       return state;
@@ -11,7 +11,7 @@ export const isAuthLoginReducer = (state = false, action) => {
 
 export const isAuthRegisterReducer = (state = false, action) => {
   switch (action.type) {
-    case ActionType.setIsAuthRegisterActionCreator:
+    case ActionType.SET_IS_AUTH_REGISTER:
       return action.payload;
     default:
       return state;
