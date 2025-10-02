@@ -1,7 +1,7 @@
 import { showErrorDialog } from "../../../helpers/toolsHelper";
 import userApi from "../api/userApi";
 
-//kalau nilainya boolean tambahkan IS kalau lebih dari boolean tidak perlu IS
+// Action Types
 export const ActionType = {
   SET_USERS: "SET_USERS",
   SET_USER: "SET_USER",
@@ -12,32 +12,27 @@ export const ActionType = {
   SET_IS_CHANGE_PROFILE_PASSWORD: "SET_IS_CHANGE_PROFILE_PASSWORD",
 };
 
-//get all users
+// ============== USERS ==============
+// Get All Users
 export function setUsersActionCreator(users) {
-  return {
-    type: ActionType.SET_USERS,
-    payload: users,
-  };
+  return { type: ActionType.SET_USERS, payload: users };
 }
 
 export function asyncSetUsers() {
   return async (dispatch) => {
     try {
-      const users = await userApi.getUser();
-      dispatch(setUsersActionCreator([]));
+      const users = await userApi.getUsers();
+      dispatch(setUsersActionCreator(users));
     } catch (error) {
       dispatch(setUsersActionCreator([]));
+      showErrorDialog(error.message);
     }
   };
 }
 
-//get user by id
-
+// Get User by ID
 export function setUserActionCreator(user) {
-  return {
-    type: ActionType.SET_USER,
-    payload: user,
-  };
+  return { type: ActionType.SET_USER, payload: user };
 }
 
 export function asyncSetUserById(userId) {
@@ -46,25 +41,19 @@ export function asyncSetUserById(userId) {
       const user = await userApi.getUserById(userId);
       dispatch(setUserActionCreator(user));
     } catch (error) {
-      dispatch(setUserActionCreator);
+      dispatch(setUserActionCreator(null));
+      showErrorDialog(error.message);
     }
   };
 }
 
-//get user profile
-
+// ============== PROFILE ==============
 export function setProfileActionCreator(profile) {
-  return {
-    type: ActionType.SET_PROFILE,
-    payload: profile,
-  };
+  return { type: ActionType.SET_PROFILE, payload: profile };
 }
 
 export function setIsProfile(isProfile) {
-  return {
-    type: ActionType.SET_IS_PROFILE,
-    payload: isProfile,
-  };
+  return { type: ActionType.SET_IS_PROFILE, payload: isProfile };
 }
 
 export function asyncSetProfile() {
@@ -74,18 +63,15 @@ export function asyncSetProfile() {
       dispatch(setProfileActionCreator(profile));
     } catch (error) {
       dispatch(setProfileActionCreator(null));
+      showErrorDialog(error.message);
     }
     dispatch(setIsProfile(true));
   };
 }
 
-// put profile
-
-export function setIsChangeProfileActionCreator(isChage) {
-  return {
-    type: ActionType.SET_IS_CHANGE_PROFILE,
-    payload: isChage,
-  };
+// Update Profile
+export function setIsChangeProfileActionCreator(isChange) {
+  return { type: ActionType.SET_IS_CHANGE_PROFILE, payload: isChange };
 }
 
 export function asyncPutProfile(name, email) {
@@ -100,12 +86,9 @@ export function asyncPutProfile(name, email) {
   };
 }
 
-// Post profile photo
+// Change Profile Photo
 export function setIsChangeProfilePhotoActionCreator(isChange) {
-  return {
-    type: ActionType.SET_IS_CHANGE_PROFILE_PHOTO,
-    payload: isChange,
-  };
+  return { type: ActionType.SET_IS_CHANGE_PROFILE_PHOTO, payload: isChange };
 }
 
 export function asyncPostProfilePhoto(photo) {
@@ -119,12 +102,9 @@ export function asyncPostProfilePhoto(photo) {
   };
 }
 
-//gamti password
-export function setIsChangeProfilePasswordActionCreator(isChage) {
-  return {
-    type: ActionType.SET_IS_CHANGE_PROFILE_PASSWORD,
-    payload: isChage,
-  };
+// Change Password
+export function setIsChangeProfilePasswordActionCreator(isChange) {
+  return { type: ActionType.SET_IS_CHANGE_PROFILE_PASSWORD, payload: isChange };
 }
 
 export function asyncPutProfilePassword(oldPassword, newPassword) {

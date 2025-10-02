@@ -11,12 +11,20 @@ const LostFoundLayout = lazy(() =>
   import("./features/lostfound/layouts/LostFoundLayout")
 );
 const LostFoundHomePage = lazy(() =>
-  import("./features/lostfound/pages/HomeLostFoundPage") // ✅
+  import("./features/lostfound/pages/HomeLostFoundPage")
 );
 const LostFoundDetailPage = lazy(() =>
-  import("./features/lostfound/pages/DetailLostFoundPage") // ✅
+  import("./features/lostfound/pages/DetailLostFoundPage")
 );
 
+// Profile
+const ProfilePage = lazy(() => import("./features/users/pages/ProfilePage"));
+
+// Stats
+const StatsPage = lazy(() => import("./features/lostfound/pages/StatsPage"));
+
+//All Users
+const UsersPage = lazy(() => import("./features/users/pages/UsersPage"));
 
 function App() {
   return (
@@ -50,10 +58,20 @@ function App() {
         {/* Lost & Found */}
         <Route path="/" element={<LostFoundLayout />}>
           <Route index element={<LostFoundHomePage />} />
+          <Route path="lost-founds" element={<LostFoundHomePage />} />
           <Route
-            path="lostfound/:lostFoundId"
+            path="lost-founds/:lostFoundId"
             element={<LostFoundDetailPage />}
           />
+
+          {/* Profile */}
+          <Route path="profile" element={<ProfilePage />} />
+
+          {/* Statistik */}
+          <Route path="stats" element={<StatsPage />} />
+
+          {/* See All User */}
+          <Route path="users" element={<UsersPage />} />
         </Route>
       </Routes>
     </Suspense>

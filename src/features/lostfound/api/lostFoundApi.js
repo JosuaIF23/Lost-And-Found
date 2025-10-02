@@ -1,4 +1,5 @@
 import apiHelper from "../../../helpers/apiHelper";
+import dayjs from "dayjs";
 
 const lostFoundApi = (() => {
   const BASE_URL = "https://open-api.delcom.org/api/v1/lost-founds";
@@ -7,7 +8,7 @@ const lostFoundApi = (() => {
     return BASE_URL + path;
   }
 
-  // Add New Lost & Found
+  // ---------------- ADD ----------------
   async function postLostFound(title, description, status) {
     const response = await apiHelper.fetchData(_url(""), {
       method: "POST",
@@ -17,10 +18,10 @@ const lostFoundApi = (() => {
 
     const { success, message, data } = await response.json();
     if (!success) throw new Error(message);
-    return data; // { lost_found_id }
+    return data.lost_found_id;
   }
 
-  // Change Cover
+  // ---------------- COVER ----------------
   async function postLostFoundCover(lostFoundId, cover) {
     const formData = new FormData();
     formData.append("cover", cover, cover.name);
@@ -35,8 +36,14 @@ const lostFoundApi = (() => {
     return message;
   }
 
-  // Update Lost & Found
-  async function putLostFound(lostFoundId, title, description, status, is_completed) {
+  // ---------------- UPDATE ----------------
+  async function putLostFound(
+    lostFoundId,
+    title,
+    description,
+    status,
+    is_completed
+  ) {
     const response = await apiHelper.fetchData(_url(`/${lostFoundId}`), {
       method: "PUT",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -48,7 +55,7 @@ const lostFoundApi = (() => {
     return message;
   }
 
-  // Get All Lost & Founds
+  // ---------------- LIST ----------------
   async function getLostFounds(params = {}) {
     const query = new URLSearchParams(params).toString();
     const response = await apiHelper.fetchData(_url(query ? `?${query}` : ""), {
@@ -60,7 +67,7 @@ const lostFoundApi = (() => {
     return data.lost_founds || [];
   }
 
-  // Get Detail
+  // ---------------- DETAIL ----------------
   async function getLostFoundById(lostFoundId) {
     const response = await apiHelper.fetchData(_url(`/${lostFoundId}`), {
       method: "GET",
@@ -71,7 +78,7 @@ const lostFoundApi = (() => {
     return data.lost_found;
   }
 
-  // Delete Lost & Found
+  // ---------------- DELETE ----------------
   async function deleteLostFound(lostFoundId) {
     const response = await apiHelper.fetchData(_url(`/${lostFoundId}`), {
       method: "DELETE",
@@ -82,28 +89,50 @@ const lostFoundApi = (() => {
     return message;
   }
 
-  // Get Stats Daily
+  // ---------------- STATS DAILY ----------------
   async function getStatsDaily(end_date, total_data) {
+    console.log(end_date, total_data);
+    console.log(dayjs(end_date).format("YYYY-MM-DD HH:mm:ss"));
+    const formatted = dayjs(end_date).format("YYYY-MM-DD HH:mm:ss"); 
+
     const response = await apiHelper.fetchData(
-      _url(`/stats/daily?end_date=${encodeURIComponent(end_date)}&total_data=${total_data}`),
-      { method: "GET" }
+      _url(`/stats/daily?end_date=${formatted}`),
+      {
+        method: "GET",
+      }
     );
 
-    const { success, message, data } = await response.json();
-    if (!success) throw new Error(message);
-    return data;
+    const text = await response.text();
+    try {
+      const { success, message, data } = JSON.parse(text);
+      if (!success) throw new Error(message);
+      return data;
+    } catch (e) {
+      throw new Error("Invalid JSON from API: " + text);
+    }
   }
 
-  // Get Stats Monthly
+  // ---------------- STATS MONTHLY ----------------
   async function getStatsMonthly(end_date, total_data) {
+    // format langsung tanpa encodeURIComponent
+    const formatted = dayjs(end_date).format("YYYY-MM-DD HH:mm:ss");
+
     const response = await apiHelper.fetchData(
-      _url(`/stats/monthly?end_date=${encodeURIComponent(end_date)}&total_data=${total_data}`),
-      { method: "GET" }
+      _url(`/stats/monthly?end_date=${formatted}&total_data=${total_data}`),
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
     );
 
-    const { success, message, data } = await response.json();
-    if (!success) throw new Error(message);
-    return data;
+    const text = await response.text();
+    try {
+      const { success, message, data } = JSON.parse(text);
+      if (!success) throw new Error(message);
+      return data;
+    } catch (e) {
+      throw new Error("Invalid JSON from API: " + text);
+    }
   }
 
   return {
@@ -118,4 +147,4 @@ const lostFoundApi = (() => {
   };
 })();
 
-export default lostFoundApi;
+export default lostFoundApi; 

@@ -17,7 +17,7 @@ import {
   isChangeProfilePasswordReducer,
 } from "./features/users/states/reducer";
 
-// Lost & Found reducers
+// Lost & Found reducers (sudah termasuk stats)
 import * as lostFoundReducer from "./features/lostfound/states/reducer";
 
 const store = configureStore({
@@ -47,6 +47,10 @@ const store = configureStore({
     isLostFoundChangedCover: lostFoundReducer.isLostFoundChangedCoverReducer,
     isLostFoundDelete: lostFoundReducer.isLostFoundDeleteReducer,
     isLostFoundDeleted: lostFoundReducer.isLostFoundDeletedReducer,
+
+    // Stats (pakai reducer.js juga)
+    statsDaily: lostFoundReducer.statsDailyReducer,
+    statsMonthly: lostFoundReducer.statsMonthlyReducer,
   },
 });
 

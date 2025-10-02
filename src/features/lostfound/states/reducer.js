@@ -98,3 +98,21 @@ export function isLostFoundDeletedReducer(state = false, action) {
       return state;
   }
 }
+
+export function statsDailyReducer(state = null, action) {
+  switch (action.type) {
+    case ActionType.SET_STATS_DAILY:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+export function statsMonthlyReducer(state = null, action) {
+  switch (action.type) {
+    case ActionType.SET_STATS_MONTHLY:
+      return action.payload;
+    default:
+      return state;
+  }
+}

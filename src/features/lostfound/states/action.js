@@ -16,6 +16,8 @@ export const ActionType = {
   SET_IS_LOSTFOUND_CHANGED_COVER: "SET_IS_LOSTFOUND_CHANGED_COVER",
   SET_IS_LOSTFOUND_DELETE: "SET_IS_LOSTFOUND_DELETE",
   SET_IS_LOSTFOUND_DELETED: "SET_IS_LOSTFOUND_DELETED",
+  SET_STATS_DAILY: "SET_STATS_DAILY",
+  SET_STATS_MONTHLY: "SET_STATS_MONTHLY",
 };
 
 // ---------------- LIST ----------------
@@ -155,5 +157,37 @@ export function asyncSetIsLostFoundDelete(lostFoundId) {
       showErrorDialog(error.message);
     }
     dispatch(setIsLostFoundDeleteActionCreator(true));
+  };
+}
+
+export function setStatsDaily(daily) {
+  return { type: ActionType.SET_STATS_DAILY, payload: daily };
+}
+
+export function setStatsMonthly(monthly) {
+  return { type: ActionType.SET_STATS_MONTHLY, payload: monthly };
+}
+
+export function asyncSetStatsDaily(endDate, total) {
+  return async (dispatch) => {
+    try {
+      const data = await lostFoundApi.getStatsDaily(endDate, total);
+      dispatch(setStatsDaily(data));
+    } catch (err) {
+      console.error("Stats daily error", err);
+      dispatch(setStatsDaily(null));
+    }
+  };
+}
+
+export function asyncSetStatsMonthly(endDate, total) {
+  return async (dispatch) => {
+    try {
+      const data = await lostFoundApi.getStatsMonthly(endDate, total);
+      dispatch(setStatsMonthly(data));
+    } catch (err) {
+      console.error("Stats monthly error", err);
+      dispatch(setStatsMonthly(null));
+    }
   };
 }
