@@ -13,7 +13,7 @@ function LostFoundLayout() {
   const profile = useSelector((state) => state.profile);
   const isProfile = useSelector((state) => state.isProfile);
 
-  // 1. Jalankan sekali untuk mengecek apakah pengguna sudah login
+  // 🔹 1. Cek token login saat pertama kali
   useEffect(() => {
     const authToken = apiHelper.getAccessToken();
     if (authToken) {
@@ -23,7 +23,7 @@ function LostFoundLayout() {
     }
   }, [dispatch, navigate]);
 
-  // 2. Jika pengguna sudah login tapi profile gagal di-load → logout
+  // 🔹 2. Jika profile gagal di-load, logout otomatis
   useEffect(() => {
     if (isProfile) {
       dispatch(setIsProfile(false));
@@ -34,7 +34,7 @@ function LostFoundLayout() {
     }
   }, [isProfile, profile, dispatch, navigate]);
 
-  // Fungsi logout
+  // 🔹 3. Fungsi logout manual
   function handleLogout() {
     apiHelper.putAccessToken("");
     navigate("/auth/login");
@@ -45,9 +45,9 @@ function LostFoundLayout() {
   return (
     <div className="d-flex">
       {/* Sidebar */}
-      <SidebarComponent />
+      <SidebarComponent profile={profile} handleLogout={handleLogout} />
 
-      {/* Main content */}
+      {/* Main Content */}
       <div className="flex-grow-1">
         <NavbarComponent profile={profile} handleLogout={handleLogout} />
 

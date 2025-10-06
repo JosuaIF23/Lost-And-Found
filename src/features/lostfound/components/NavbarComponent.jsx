@@ -1,11 +1,14 @@
 import { NavLink } from "react-router-dom";
 
-function NavbarComponent() {
+function NavbarComponent({ profile, handleLogout }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
       <div className="container-fluid">
         {/* Logo / Brand */}
-        <NavLink className="navbar-brand fw-bold d-flex align-items-center" to="/">
+        <NavLink
+          className="navbar-brand fw-bold d-flex align-items-center"
+          to="/"
+        >
           <i className="bi bi-box-seam me-2"></i> Lost & Found
         </NavLink>
 
@@ -40,16 +43,30 @@ function NavbarComponent() {
                 <i className="bi bi-bar-chart me-1"></i> Statistik
               </NavLink>
             </li>
+
+            {/* Dropdown Profile */}
             <li className="nav-item dropdown">
               <a
-                className="nav-link dropdown-toggle"
+                className="nav-link dropdown-toggle d-flex align-items-center"
                 href="#"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <i className="bi bi-person-circle me-1"></i> Profil
+                <img
+                  src={profile?.photo
+                    ? profile.photo.startsWith("http")
+                      ? profile.photo
+                      : `https://open-api.delcom.org/${profile.photo}`
+                    : "/avatar.png"}
+                  alt="profile"
+                  width="28"
+                  height="28"
+                  className="rounded-circle me-2"
+                />
+                {profile?.name || "Profil"}
               </a>
+
               <ul className="dropdown-menu dropdown-menu-end">
                 <li>
                   <NavLink className="dropdown-item" to="/profile">
@@ -60,7 +77,14 @@ function NavbarComponent() {
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <button className="dropdown-item text-danger">
+                  <button
+                    className="dropdown-item text-danger"
+                    onClick={() => {
+                      if (window.confirm("Yakin ingin keluar?")) {
+                        handleLogout();
+                      }
+                    }}
+                  >
                     <i className="bi bi-box-arrow-right me-2"></i> Keluar
                   </button>
                 </li>
