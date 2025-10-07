@@ -2,10 +2,12 @@ import apiHelper from "../../../helpers/apiHelper";
 import dayjs from "dayjs";
 
 const lostFoundApi = (() => {
-  const BASE_URL = "https://open-api.delcom.org/api/v1/lost-founds";
 
+  const BASE_URL = `${DELCOM_BASEURL}/lost-founds`;
+
+  // Fungsi untuk membentuk URL lengkap
   function _url(path = "") {
-    return BASE_URL + path;
+    return `${BASE_URL}${path}`;
   }
 
   // ---------------- ADD ----------------
@@ -37,13 +39,7 @@ const lostFoundApi = (() => {
   }
 
   // ---------------- UPDATE ----------------
-  async function putLostFound(
-    lostFoundId,
-    title,
-    description,
-    status,
-    is_completed
-  ) {
+  async function putLostFound(lostFoundId, title, description, status, is_completed) {
     const response = await apiHelper.fetchData(_url(`/${lostFoundId}`), {
       method: "PUT",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -91,15 +87,11 @@ const lostFoundApi = (() => {
 
   // ---------------- STATS DAILY ----------------
   async function getStatsDaily(end_date, total_data) {
-    console.log(end_date, total_data);
-    console.log(dayjs(end_date).format("YYYY-MM-DD HH:mm:ss"));
-    const formatted = dayjs(end_date).format("YYYY-MM-DD HH:mm:ss"); 
+    const formatted = dayjs(end_date).format("YYYY-MM-DD HH:mm:ss");
 
     const response = await apiHelper.fetchData(
-      _url(`/stats/daily?end_date=${formatted}`),
-      {
-        method: "GET",
-      }
+      _url(`/stats/daily?end_date=${formatted}&total_data=${total_data}`),
+      { method: "GET" }
     );
 
     const text = await response.text();
@@ -114,7 +106,6 @@ const lostFoundApi = (() => {
 
   // ---------------- STATS MONTHLY ----------------
   async function getStatsMonthly(end_date, total_data) {
-    // format langsung tanpa encodeURIComponent
     const formatted = dayjs(end_date).format("YYYY-MM-DD HH:mm:ss");
 
     const response = await apiHelper.fetchData(
@@ -135,6 +126,7 @@ const lostFoundApi = (() => {
     }
   }
 
+  // ---------------- Exports ----------------
   return {
     postLostFound,
     postLostFoundCover,
@@ -147,4 +139,4 @@ const lostFoundApi = (() => {
   };
 })();
 
-export default lostFoundApi; 
+export default lostFoundApi;

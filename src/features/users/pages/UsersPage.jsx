@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import userApi from "../api/userApi";
 
 function UsersPage() {
-  const [allUsers, setAllUsers] = useState([]); // simpan semua data
-  const [users, setUsers] = useState([]); // data yang ditampilkan
+  const [allUsers, setAllUsers] = useState([]); // semua data user
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [search, setSearch] = useState(""); // input pencarian nama
-  const [searchId, setSearchId] = useState(""); // input ID
+  const [search, setSearch] = useState(""); // cari nama
+  const [searchId, setSearchId] = useState(""); // cari ID
+
+  // 🔹 Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // jumlah user per halaman
 
   useEffect(() => {
     async function fetchUsers() {
@@ -16,7 +19,6 @@ function UsersPage() {
         const fetched = await userApi.getUsers();
         const reversed = fetched.reverse();
         setAllUsers(reversed);
-        setUsers(reversed);
       } catch (e) {
         setError(e.message);
       } finally {
@@ -29,31 +31,43 @@ function UsersPage() {
   // 🔍 Cari user by ID
   async function handleSearchById(e) {
     e.preventDefault();
-    if (!searchId) {
-      setUsers(allUsers); // reset kalau kosong
-      return;
-    }
+    if (!searchId) return;
 
     try {
       const user = await userApi.getUserById(searchId);
-      setUsers([user]);
+      setAllUsers([user]);
+      setCurrentPage(1);
     } catch (e) {
       setError("User tidak ditemukan");
-      setUsers([]); // kosongkan tabel
+      setAllUsers([]);
     }
   }
 
-  // 🔁 Tombol reset (balik ke semua user)
+  // 🔁 Reset data
   function handleReset() {
-    setUsers(allUsers);
     setSearch("");
     setSearchId("");
     setError(null);
+    setCurrentPage(1);
+    // reload data dari API
+    setLoading(true);
+    userApi.getUsers().then((data) => {
+      setAllUsers(data.reverse());
+      setLoading(false);
+    });
   }
 
-  // 🔍 Filter by name (client-side)
-  const filteredUsers = users.filter((u) =>
+  // 🔎 Filter nama
+  const filteredUsers = allUsers.filter((u) =>
     u.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // 🔹 Hitung index data untuk pagination
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentUsers = filteredUsers.slice(
+    startIndex,
+    startIndex + itemsPerPage
   );
 
   if (loading) return <p className="text-center mt-4">Loading users...</p>;
@@ -61,21 +75,22 @@ function UsersPage() {
 
   return (
     <div className="container mt-4">
-      <h1>Users</h1>
+      <h1 className="fw-bold mb-3">Daftar Pengguna</h1>
 
       {/* 🔍 Search Form */}
-      <div className="mb-3 d-flex flex-wrap gap-3">
-        {/* Search by name */}
+      <div className="mb-3 d-flex flex-wrap gap-3 align-items-center">
         <input
           type="text"
           className="form-control"
           style={{ flex: 1 }}
           placeholder="Cari berdasarkan nama..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setCurrentPage(1);
+          }}
         />
 
-        {/* Search by ID */}
         <form className="d-flex gap-2" onSubmit={handleSearchById}>
           <input
             type="number"
@@ -94,26 +109,32 @@ function UsersPage() {
         </button>
       </div>
 
-      {/* Table Users */}
+      {/* Tabel Users */}
       <table className="table table-bordered table-striped mt-3">
-        <thead>
+        <thead className="table-light">
           <tr>
-            <th>ID</th>
+            <th style={{ width: "70px" }}>ID</th>
             <th>Nama</th>
             <th>Email</th>
-            <th>Foto</th>
+            <th style={{ width: "80px" }}>Foto</th>
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.length > 0 ? (
-            filteredUsers.map((user) => (
+          {currentUsers.length > 0 ? (
+            currentUsers.map((user) => (
               <tr key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td>
+                <td className="text-center">
                   <img
-                    src={user.photo}
+                    src={
+                      user.photo
+                        ? user.photo.startsWith("http")
+                          ? user.photo
+                          : `https://open-api.delcom.org/${user.photo}`
+                        : "/avatar.png"
+                    }
                     alt={user.name}
                     width={40}
                     height={40}
@@ -124,13 +145,56 @@ function UsersPage() {
             ))
           ) : (
             <tr>
-              <td colSpan="4" className="text-center">
+              <td colSpan="4" className="text-center py-3">
                 Tidak ada data
               </td>
             </tr>
           )}
         </tbody>
       </table>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <nav className="d-flex justify-content-center mt-3">
+          <ul className="pagination">
+            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+              <button
+                className="page-link"
+                onClick={() => setCurrentPage((p) => p - 1)}
+              >
+                «
+              </button>
+            </li>
+
+            {[...Array(totalPages)].map((_, i) => (
+              <li
+                key={i}
+                className={`page-item ${currentPage === i + 1 ? "active" : ""}`}
+              >
+                <button
+                  className="page-link"
+                  onClick={() => setCurrentPage(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              </li>
+            ))}
+
+            <li
+              className={`page-item ${
+                currentPage === totalPages ? "disabled" : ""
+              }`}
+            >
+              <button
+                className="page-link"
+                onClick={() => setCurrentPage((p) => p + 1)}
+              >
+                »
+              </button>
+            </li>
+          </ul>
+        </nav>
+      )}
     </div>
   );
 }

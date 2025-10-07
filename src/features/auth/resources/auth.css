@@ -1,0 +1,44 @@
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #6c63ff, #00b4d8);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  max-width: 450px;
+  width: 100%;
+  padding: 2rem 2.5rem;
+  border-radius: 1rem;
+}
+
+.auth-card input.form-control {
+  border-radius: 0.6rem;
+  border: 1px solid #ddd;
+  padding: 0.8rem 1rem;
+}
+
+.auth-card input.form-control:focus {
+  border-color: #6c63ff;
+  box-shadow: 0 0 0 0.25rem rgba(108, 99, 255, 0.25);
+}
+
+.animate-fadein {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

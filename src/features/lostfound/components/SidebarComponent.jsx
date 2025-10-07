@@ -83,13 +83,10 @@ function SidebarComponent({ profile, handleLogout }) {
             <hr className="dropdown-divider" />
           </li>
           <li>
+            {/* langsung logout tanpa konfirmasi */}
             <button
               className="dropdown-item text-danger"
-              onClick={() => {
-                if (window.confirm("Yakin ingin keluar?")) {
-                  handleLogout();
-                }
-              }}
+              onClick={handleLogout}
             >
               <i className="bi bi-box-arrow-right me-2"></i> Keluar
             </button>

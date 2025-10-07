@@ -10,6 +10,9 @@ const RegisterPage = lazy(() => import("./features/auth/pages/RegisterPage"));
 const LostFoundLayout = lazy(() =>
   import("./features/lostfound/layouts/LostFoundLayout")
 );
+const BerandaPage = lazy(() =>
+  import("./features/lostfound/pages/BerandaPage")
+);
 const LostFoundHomePage = lazy(() =>
   import("./features/lostfound/pages/HomeLostFoundPage")
 );
@@ -23,7 +26,7 @@ const ProfilePage = lazy(() => import("./features/users/pages/ProfilePage"));
 // Stats
 const StatsPage = lazy(() => import("./features/lostfound/pages/StatsPage"));
 
-//All Users
+// Users
 const UsersPage = lazy(() => import("./features/users/pages/UsersPage"));
 
 function App() {
@@ -57,20 +60,23 @@ function App() {
 
         {/* Lost & Found */}
         <Route path="/" element={<LostFoundLayout />}>
-          <Route index element={<LostFoundHomePage />} />
+          {/* 🏠 Beranda */}
+          <Route index element={<BerandaPage />} />
+
+          {/* 📦 Halaman Manajemen Lost & Found */}
           <Route path="lost-founds" element={<LostFoundHomePage />} />
           <Route
             path="lost-founds/:lostFoundId"
             element={<LostFoundDetailPage />}
           />
 
-          {/* Profile */}
+          {/* 👤 Profile */}
           <Route path="profile" element={<ProfilePage />} />
 
-          {/* Statistik */}
+          {/* 📊 Statistik */}
           <Route path="stats" element={<StatsPage />} />
 
-          {/* See All User */}
+          {/* 👥 Semua Pengguna */}
           <Route path="users" element={<UsersPage />} />
         </Route>
       </Routes>
