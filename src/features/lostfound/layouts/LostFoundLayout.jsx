@@ -44,13 +44,15 @@ function LostFoundLayout() {
 
   return (
     <div className="d-flex">
-      {/* Sidebar */}
+      {/* Sidebar tetap di kiri */}
       <SidebarComponent profile={profile} handleLogout={handleLogout} />
 
-      {/* Main Content */}
-      <div className="flex-grow-1">
+      {/* Main content di kanan sidebar */}
+      <div className="flex-grow-1" style={{ marginLeft: "250px" }}>
+        {/* Navbar di atas konten */}
         <NavbarComponent profile={profile} handleLogout={handleLogout} />
 
+        {/* Isi halaman */}
         <main className="container-fluid py-4">
           <Outlet />
         </main>

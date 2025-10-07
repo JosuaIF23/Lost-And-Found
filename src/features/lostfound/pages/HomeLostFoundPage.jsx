@@ -10,6 +10,8 @@ import {
   setIsLostFoundDeleteActionCreator,
 } from "../states/action";
 import { formatDate, showConfirmDialog } from "../../../helpers/toolsHelper";
+import "../resources/custom.css";
+
 
 function HomeLostFoundPage() {
   const dispatch = useDispatch();
@@ -50,8 +52,8 @@ function HomeLostFoundPage() {
 
   return (
     <>
-      <div className="main-content">
-        <div className="container-fluid mt-3">
+      <div className="">
+        <div className="container-fluid">
           <h2>Lost & Found</h2>
           <hr />
           <div className="d-flex justify-content-between align-items-center mb-3">

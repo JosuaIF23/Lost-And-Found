@@ -41,7 +41,7 @@ function DetailLostFoundPage() {
 
   return (
     <>
-      <div className="main-content">
+      <div className="">
         <div className="container-fluid mt-3">
           <div className="d-flex justify-content-between align-items-center">
             <h2 className="mb-0">

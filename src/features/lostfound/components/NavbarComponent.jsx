@@ -54,11 +54,13 @@ function NavbarComponent({ profile, handleLogout }) {
                 aria-expanded="false"
               >
                 <img
-                  src={profile?.photo
-                    ? profile.photo.startsWith("http")
-                      ? profile.photo
-                      : `https://open-api.delcom.org/${profile.photo}`
-                    : "/avatar.png"}
+                  src={
+                    profile?.photo
+                      ? profile.photo.startsWith("http")
+                        ? profile.photo
+                        : `https://open-api.delcom.org/${profile.photo}`
+                      : "/avatar.png"
+                  }
                   alt="profile"
                   width="28"
                   height="28"

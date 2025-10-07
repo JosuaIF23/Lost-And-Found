@@ -113,3 +113,28 @@ body {
     margin-left: 0;
   }
 }
+
+/* ===== Navbar Fix Adjustment ===== */
+body {
+  padding-top: 56px; /* tinggi default navbar bootstrap */
+}
+
+/* Opsional: kalau konten terlalu rapat, tambah sedikit */
+.main-content {
+  margin-top: 10px;
+}
+
+.navbar.fixed-top {
+  z-index: 1050; /* pastikan di atas sidebar */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Spacing kecil antar navbar dan konten */
+main {
+  margin-top: 10px;
+}

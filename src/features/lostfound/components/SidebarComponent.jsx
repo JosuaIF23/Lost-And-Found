@@ -3,8 +3,13 @@ import { NavLink } from "react-router-dom";
 function SidebarComponent({ profile, handleLogout }) {
   return (
     <div
-      className="d-flex flex-column flex-shrink-0 p-3 bg-light border-end"
-      style={{ width: "250px", minHeight: "100vh" }}
+      className="d-flex flex-column flex-shrink-0 p-3 bg-light border-end position-fixed"
+      style={{
+        width: "250px",
+        height: "100vh",
+        top: 0,
+        left: 0,
+      }}
     >
       {/* Header Logo */}
       <NavLink
