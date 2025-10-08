@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import userApi from "../api/userApi";
+import "../resources/theme.css";
 
 function ProfilePage() {
   const [profile, setProfile] = useState(null);
@@ -7,7 +8,6 @@ function ProfilePage() {
   const [name, setName] = useState("");
   const [saving, setSaving] = useState(false);
 
-  // ambil profil dari /users/me
   useEffect(() => {
     async function fetchProfile() {
       try {
@@ -23,12 +23,8 @@ function ProfilePage() {
     fetchProfile();
   }, []);
 
-
   async function handleUpdateProfile() {
-    if (!name) {
-      alert("Nama wajib diisi!");
-      return;
-    }
+    if (!name) return alert("Nama wajib diisi!");
     setSaving(true);
     try {
       const updatedUser = await userApi.putProfile(name, profile.email);
@@ -41,15 +37,12 @@ function ProfilePage() {
     }
   }
 
-
   async function handleChangePhoto(e) {
     const file = e.target.files[0];
     if (!file) return;
-
     try {
       await userApi.postProfilePhoto(file);
       alert("✅ Foto profil berhasil diganti!");
-      // refresh tampilan foto
       setProfile((prev) => ({
         ...prev,
         photo: URL.createObjectURL(file),
@@ -59,38 +52,33 @@ function ProfilePage() {
     }
   }
 
-  if (loading) {
+  if (loading)
     return <p className="text-center mt-4">Loading profil...</p>;
-  }
 
   return (
-    <div className="container mt-4">
-      <h1 className="mb-4">👤 Profil Saya</h1>
+    <div className="page-wrapper">
+      <div className="page-header">
+        <h2>Profil Saya</h2>
+      </div>
 
-      {/* Bagian atas: foto + nama */}
-      <div className="text-center mb-4">
+      <div className="profile-card">
         <img
           src={
             profile?.photo?.startsWith("http")
               ? profile.photo
-              : `https://open-api.delcom.org/storage/${profile?.photo}`
+              : `https://open-api.delcom.org/${profile?.photo}`
           }
           alt="Profile"
-          className="rounded-circle border"
-          width="140"
-          height="140"
         />
-        <div className="mt-2">
-          <input type="file" accept="image/*" onChange={handleChangePhoto} />
-        </div>
-        <h3 className="mt-3">{profile?.name}</h3>
-      </div>
+        <input type="file" accept="image/*" onChange={handleChangePhoto} />
+        <h3>{profile?.name}</h3>
+        <p className="text-muted">{profile?.email}</p>
 
-      {/* Card update data */}
-      <div className="card p-3">
-        <h5>Update Profil</h5>
-        <div className="mb-3">
-          <label className="form-label">Nama</label>
+        <hr className="my-3" />
+        <h5 className="mb-3">Perbarui Informasi</h5>
+
+        <div className="mb-3 text-start">
+          <label className="form-label">Nama Lengkap</label>
           <input
             type="text"
             className="form-control"
@@ -98,17 +86,9 @@ function ProfilePage() {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div className="mb-3">
-          <label className="form-label">Email</label>
-          <input
-            type="email"
-            className="form-control"
-            value={profile?.email || ""}
-            disabled
-          />
-        </div>
+
         <button
-          className="btn btn-primary"
+          className="btn btn-primary w-100 mt-2"
           onClick={handleUpdateProfile}
           disabled={saving}
         >

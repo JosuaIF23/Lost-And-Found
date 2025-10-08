@@ -3,51 +3,55 @@ import { NavLink } from "react-router-dom";
 function SidebarComponent({ profile, handleLogout }) {
   return (
     <div
-      className="d-flex flex-column flex-shrink-0 p-3 bg-light border-end position-fixed"
+      className="d-flex flex-column flex-shrink-0 position-fixed"
       style={{
         width: "250px",
         height: "100vh",
         top: 0,
         left: 0,
+        backgroundColor: "#f8fafc",
+        borderRight: "1px solid #e2e8f0",
+        boxShadow: "2px 0 10px rgba(0,0,0,0.03)",
+        padding: "1.5rem 1rem",
       }}
     >
-      {/* Header Logo */}
+      {/* Header */}
       <NavLink
         to="/"
-        className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
+        className="d-flex align-items-center mb-4 text-decoration-none"
       >
-        <i className="bi bi-box-seam fs-4 me-2 text-primary"></i>
-        <span className="fs-5 fw-bold">Lost & Found</span>
+        <i className="bi bi-box-seam fs-4 text-primary me-2"></i>
+        <span className="fs-5 fw-bold text-dark">Lost & Found</span>
       </NavLink>
 
-      <hr />
-
-      {/* Menu Navigasi */}
+      {/* Menu */}
       <ul className="nav nav-pills flex-column mb-auto">
-        <li className="nav-item">
-          <NavLink to="/" className="nav-link text-dark" end>
-            <i className="bi bi-house-door me-2"></i> Beranda
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/lost-founds" className="nav-link text-dark">
-            <i className="bi bi-search me-2"></i> Lost & Founds
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/stats" className="nav-link text-dark">
-            <i className="bi bi-bar-chart me-2"></i> Statistik
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/users" className="nav-link text-dark">
-            <i className="bi bi-people me-2"></i> Pengguna
-          </NavLink>
-        </li>
+        {[
+          { to: "/", icon: "bi-house-door", label: "Beranda" },
+          { to: "/lost-founds", icon: "bi-search", label: "Lost & Founds" },
+          { to: "/stats", icon: "bi-bar-chart", label: "Statistik" },
+          { to: "/users", icon: "bi-people", label: "Pengguna" },
+        ].map(({ to, icon, label }) => (
+          <li className="nav-item mb-1" key={to}>
+            <NavLink
+              to={to}
+              end
+              className={({ isActive }) =>
+                `nav-link d-flex align-items-center rounded-3 fw-medium ${
+                  isActive
+                    ? "bg-primary text-white shadow-sm"
+                    : "text-dark hover-bg"
+                }`
+              }
+            >
+              <i className={`bi ${icon} me-2`}></i> {label}
+            </NavLink>
+          </li>
+        ))}
       </ul>
 
-      {/* Dropdown User */}
-      <div className="dropdown mt-auto">
+      {/* User Dropdown */}
+      <div className="dropdown mt-auto pt-3 border-top">
         <a
           href="#"
           className="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
@@ -64,14 +68,14 @@ function SidebarComponent({ profile, handleLogout }) {
                 : "/avatar.png"
             }
             alt="user"
-            width="32"
-            height="32"
-            className="rounded-circle me-2"
+            width="36"
+            height="36"
+            className="rounded-circle me-2 border"
           />
           <strong>{profile?.name || "Tidak Dikenal"}</strong>
         </a>
         <ul
-          className="dropdown-menu text-small shadow"
+          className="dropdown-menu shadow-sm text-small"
           aria-labelledby="dropdownUser"
         >
           <li>
@@ -79,11 +83,8 @@ function SidebarComponent({ profile, handleLogout }) {
               <i className="bi bi-gear me-2"></i> Pengaturan
             </NavLink>
           </li>
+          <li><hr className="dropdown-divider" /></li>
           <li>
-            <hr className="dropdown-divider" />
-          </li>
-          <li>
-            {/* langsung logout tanpa konfirmasi */}
             <button
               className="dropdown-item text-danger"
               onClick={handleLogout}

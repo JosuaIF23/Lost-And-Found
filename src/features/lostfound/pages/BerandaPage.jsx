@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { asyncSetLostFounds } from "../states/action";
 import { formatDate } from "../../../helpers/toolsHelper";
+import "../resources/theme.css";
 
 function BerandaPage() {
   const dispatch = useDispatch();
@@ -12,21 +13,21 @@ function BerandaPage() {
   }, [dispatch]);
 
   return (
-    <div className="container-fluid mt-3">
-      <h2 className="fw-bold mb-3">Beranda</h2>
+    <div className="page-wrapper">
+      <div className="page-header">
+        <h2>Beranda</h2>
+      </div>
       <p className="text-muted mb-4">
         Berikut beberapa barang hilang dan ditemukan terbaru dari sistem Lost &
         Found DelCom.
       </p>
 
-      <div className="card shadow-sm">
+      <div className="card">
         <div className="card-body p-0">
-          <table className="table table-hover mb-0">
-            <thead className="table-light">
+          <table className="table table-hover mb-0 align-middle">
+            <thead>
               <tr>
-                <th className="text-center" style={{ width: "60px" }}>
-                  ID
-                </th>
+                <th>ID</th>
                 <th>Judul</th>
                 <th>Status</th>
                 <th>Progress</th>
@@ -43,7 +44,7 @@ function BerandaPage() {
               )}
               {lostFounds.slice(0, 10).map((item) => (
                 <tr key={item.id}>
-                  <td className="text-center">{item.id}</td>
+                  <td>{item.id}</td>
                   <td>{item.title}</td>
                   <td>
                     <span

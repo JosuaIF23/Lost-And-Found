@@ -1,4 +1,4 @@
-/* Layout */
+Layout
 body {
   padding-top: 56px;
   background-color: #f5f7fa;
@@ -125,7 +125,7 @@ body {
 }
 
 .navbar.fixed-top {
-  z-index: 1050; /* pastikan di atas sidebar */
+  z-index: 1050; 
 }
 
 body {
