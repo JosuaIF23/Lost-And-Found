@@ -17,21 +17,24 @@ function AddLostFoundModal({ show, onClose }) {
 
   const [loading, setLoading] = useState(false);
 
-  const [title, changeTitle] = useInput("");
-  const [description, changeDescription] = useInput("");
+  const [title, changeTitle, resetTitle] = useInput("");
+  const [description, changeDescription, resetDescription] = useInput("");
   const [status, setStatus] = useState("lost");
 
   useEffect(() => {
-    if (isAdd) {
+    if (isAdd || isAdded) {
       setLoading(false);
       dispatch(setIsLostFoundAddActionCreator(false));
       if (isAdded) {
         dispatch(setIsLostFoundAddedActionCreator(false));
         dispatch(asyncSetLostFounds());
         onClose();
+        resetTitle();
+        resetDescription();
+        setStatus("lost");
       }
     }
-  }, [isAdd]);
+  }, [isAdd, isAdded, dispatch, onClose]);
 
   useEffect(() => {
     document.body.style.overflow = show ? "hidden" : "auto";
@@ -75,11 +78,11 @@ function AddLostFoundModal({ show, onClose }) {
                 <div className="modal-body">
                   <div className="mb-3">
                     <label className="form-label">Judul</label>
-                    <input type="text" className="form-control" onChange={changeTitle} />
+                    <input type="text" className="form-control" value={title} onChange={changeTitle} />
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Deskripsi</label>
-                    <textarea className="form-control" rows="3" onChange={changeDescription}></textarea>
+                    <textarea className="form-control" rows="3" value={description} onChange={changeDescription}></textarea>
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Status</label>

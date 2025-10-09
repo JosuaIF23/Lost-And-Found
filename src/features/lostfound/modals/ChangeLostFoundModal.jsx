@@ -21,7 +21,7 @@ function ChangeLostFoundModal({ show, onClose, lostFound }) {
   const [isCompleted, setIsCompleted] = useState(lostFound?.is_completed || 0);
 
   useEffect(() => {
-    if (isChange) {
+    if (isChange || isChanged) {
       setLoading(false);
       dispatch(setIsLostFoundChangeActionCreator(false));
       if (isChanged) {
@@ -30,7 +30,7 @@ function ChangeLostFoundModal({ show, onClose, lostFound }) {
         onClose();
       }
     }
-  }, [isChange]);
+  }, [isChange, isChanged, dispatch, onClose]);
 
   useEffect(() => {
     document.body.style.overflow = show ? "hidden" : "auto";
@@ -41,7 +41,15 @@ function ChangeLostFoundModal({ show, onClose, lostFound }) {
     if (!description) return showErrorDialog("Deskripsi wajib diisi");
 
     setLoading(true);
-    dispatch(asyncSetIsLostFoundChange(lostFound.id, title, description, status, isCompleted));
+    dispatch(
+      asyncSetIsLostFoundChange(
+        lostFound.id,
+        title,
+        description,
+        status,
+        isCompleted
+      )
+    );
   }
 
   return (
@@ -69,20 +77,38 @@ function ChangeLostFoundModal({ show, onClose, lostFound }) {
               <div className="modal-content">
                 <div className="modal-header bg-light">
                   <h1 className="modal-title fs-5">Edit Lost & Found</h1>
-                  <button type="button" className="btn-close" onClick={onClose}></button>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={onClose}
+                  ></button>
                 </div>
                 <div className="modal-body">
                   <div className="mb-3">
                     <label className="form-label">Judul</label>
-                    <input type="text" className="form-control" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Deskripsi</label>
-                    <textarea className="form-control" rows="3" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                    <textarea
+                      className="form-control"
+                      rows="3"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    ></textarea>
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Status</label>
-                    <select className="form-select" value={status} onChange={(e) => setStatus(e.target.value)}>
+                    <select
+                      className="form-select"
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value)}
+                    >
                       <option value="lost">Lost</option>
                       <option value="found">Found</option>
                     </select>
@@ -95,16 +121,26 @@ function ChangeLostFoundModal({ show, onClose, lostFound }) {
                       checked={isCompleted === 1}
                       onChange={(e) => setIsCompleted(e.target.checked ? 1 : 0)}
                     />
-                    <label className="form-check-label" htmlFor="isCompletedCheck">Tandai selesai</label>
+                    <label
+                      className="form-check-label"
+                      htmlFor="isCompletedCheck"
+                    >
+                      Tandai selesai
+                    </label>
                   </div>
                 </div>
                 <div className="modal-footer bg-light">
-                  <button type="button" className="btn btn-secondary" onClick={onClose}>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={onClose}
+                  >
                     <i className="bi bi-x-circle"></i> Batal
                   </button>
                   {loading ? (
                     <button className="btn btn-success" disabled>
-                      <span className="spinner-border spinner-border-sm"></span> Menyimpan...
+                      <span className="spinner-border spinner-border-sm"></span>{" "}
+                      Menyimpan...
                     </button>
                   ) : (
                     <button className="btn btn-success" onClick={handleSave}>
