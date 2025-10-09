@@ -1,6 +1,8 @@
+
 # Custom
 .env
 public_html
+dist
 
 # Logs
 logs

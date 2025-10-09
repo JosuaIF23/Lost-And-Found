@@ -6,7 +6,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from "./store"; // pastikan store.js sudah ada lostfound reducer
+import store from "./store"; 
 import "./index.css";
 import "./features/lostfound/resources/custom.css";
 
